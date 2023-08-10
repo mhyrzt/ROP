@@ -68,8 +68,8 @@ class Retinex:
 
     def color_restore(
         self,
-        alpha: int,
-        beta: int,
+        alpha: float,
+        beta: float,
     ):
         return beta * (
             np.log10(alpha * self.image)
@@ -79,16 +79,21 @@ class Retinex:
     def multi_scale_color_restoration(
         self,
         sigma_scales: list[float] = [15, 80, 250],
-        alpha: int = 125,
-        beta: int = 46,
-        G: int = 192,
+        alpha: float = 125,
+        beta: float = 46,
+        G: float = 192,
         b: float = -30,
-        low_per: int = 1,
-        high_per: int = 1,
+        low_per: float = 1,
+        high_per: float = 1,
     ):
         self.image = self.image.astype("float64") + 1.0
         self.image = self.normalize(
-            G * (self.multi_scale(sigma_scales) * self.multi_scale(sigma_scales) - b)
+            G
+            * (
+                self.multi_scale(sigma_scales)
+                * self.color_restore(sigma_scales, alpha, beta)
+                - b
+            )
         )
         msrcr = self.color_balance(low_per, high_per)
         self.image = np.copy(self.original)
@@ -100,7 +105,6 @@ class Retinex:
         low_per: float = 1,
         high_per: float = 1,
     ):
-        # Intensity
         self.image = np.sum(self.image, axis=2) / self.image.shape[2] + 1.0
         intensity = np.copy(self.image)
         self.image = self.multi_scale(sigma_scales)

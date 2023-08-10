@@ -1,3 +1,0 @@
-# Green Channel
-# GrayScale
-# RGB
