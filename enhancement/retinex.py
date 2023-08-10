@@ -7,7 +7,7 @@ class Retinex:
         self.image = np.copy(image)
         self.original = np.copy(image)
 
-    def get_kernel_size(sigma: float) -> int:
+    def get_kernel_size(self, sigma: float) -> int:
         return int(((sigma - 0.8) / 0.15) + 2.0)
 
     def get_gaussian_blur(self, sigma: float, kernel_size: int = None):
