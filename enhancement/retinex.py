@@ -25,7 +25,7 @@ class Retinex:
         )
 
     def multi_scale(self, sigmas: list[float] = [15, 80, 250], normalize: bool = False):
-        msr = np.zeros_like(self.image)
+        msr = np.zeros_like(self.image, dtype=np.float64)
         for u in sigmas:
             msr += self.single_scale(u) / len(sigmas)
         if normalize:
