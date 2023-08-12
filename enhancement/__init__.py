@@ -8,7 +8,7 @@ from .retinex import Retinex
 
 
 def load_image(path: str) -> np.ndarray:
-    return cv2.imread(path)
+    return cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
 
 
 def per_pixel_average(image: np.ndarray, b_min=120) -> np.ndarray:
